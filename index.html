@@ -1,0 +1,113 @@
+# Weatherapp
+<html>
+<head>
+  <style>
+  body{
+    font-family:Arial;
+    text-align:center;
+    margin-top:50px;
+    background-color:#f0f8ff;
+  }
+  h1{
+    margin-bottom:50px;
+  }
+  input{
+    padding:10px;
+    width:200px;
+    font-size:16px;
+    border:2px solid green;
+    border-radius:5px;
+  }
+  button{
+  padding:10px;
+  background-color:blue;
+  color:white;
+  border:none;
+  cursor:pointer;
+  border-radius:5px;
+}
+</style>
+</head>
+<body>
+  <div class="container">
+  <h1>⛅Weather App</h1>
+  <input type="text" placeholder="Enter your city Name">
+  <button onclick="getWeather()">Get weather</button>
+  <div id="weatherResult" style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 10px;"></div>
+</div>
+<script>
+  function getWeather(){
+    let city=document.querySelector("input").value.toLowerCase().trim();
+    if(!city){
+      alert("Enter city name First")
+    }
+
+    // Improved hardcoded data
+    let weatherData={
+      'karachi': {temp: '35°C',humidity:'65%',condition:'Sunny ☀️', icon: '☀️' },
+        'lahore': { temp: '28°C', humidity: '70%', condition: 'Partly Cloudy ⛅', icon: '⛅' },
+        'islamabad': { temp: '25°C', humidity: '60%', condition: 'Clear Sky 🌤️', icon: '🌤️' },
+        'london': { temp: '15°C', humidity: '80%', condition: 'Rainy 🌧️', icon: '🌧️' },
+        'dubai': { temp: '38°C', humidity: '45%', condition: 'Hot 🌞', icon: '🌞' },
+        'new york': { temp: '20°C', humidity: '75%', condition: 'Cloudy ☁️', icon: '☁️' }
+    };
+    
+    // Agar city list mein nahi hai, to random data generate karo
+    if (!weatherData[city]) {
+        // Random weather data generate karo
+        let randomTemps = [22, 25, 28, 30, 32, 35, 18, 20];
+        let randomHumidity = [60, 65, 70, 75, 80, 85];
+        let weatherConditions = [
+            { condition: 'Sunny ☀️', icon: '☀️' },
+            { condition: 'Partly Cloudy ⛅', icon: '⛅' },
+            { condition: 'Cloudy ☁️', icon: '☁️' },
+            { condition: 'Rainy 🌧️', icon: '🌧️' },
+            { condition: 'Clear Sky 🌤️', icon: '🌤️' }
+        ];
+        
+        let randomTemp = randomTemps[Math.floor(Math.random() * randomTemps.length)];
+        let randomHum = randomHumidity[Math.floor(Math.random() * randomHumidity.length)];
+        let randomWeather = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
+        
+        weatherData[city] = {
+            temp: randomTemp + '°C',
+            humidity: randomHum + '%',
+            condition: randomWeather.condition,
+            icon: randomWeather.icon
+        };
+    }
+
+    // Weather display karo
+    let data = weatherData[city];
+    let resultDiv = document.getElementById('weatherResult');
+    resultDiv.innerHTML = `
+        <div style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            <div style="font-size: 48px; text-align: center;">${data.icon}</div>
+            <h3 style="text-align: center; margin: 10px 0;">${city.toUpperCase()}</h3>
+            <div style="display: flex; justify-content: space-around; text-align: center; margin-top: 20px;">
+                <div>
+                    <div style="font-size: 24px;">🌡️</div>
+                    <div>${data.temp}</div>
+                    <small>Temperature</small>
+                </div>
+                <div>
+                    <div style="font-size: 24px;">💧</div>
+                    <div>${data.humidity}</div>
+                    <small>Humidity</small>
+                </div>
+                <div>
+                    <div style="font-size: 24px;">📝</div>
+                    <div>${data.condition}</div>
+                    <small>Condition</small>
+                </div>
+            </div>
+        </div>
+        <p style="font-size: 12px; color: #666; margin-top: 10px; text-align: center;">
+            Note: This shows demo weather data for learning purposes
+            ${!['karachi', 'lahore', 'islamabad', 'london', 'dubai', 'new york'].includes(city) ? '<br>Random data generated for new city' : ''}
+        </p>
+    `;
+}
+</script>
+</body>
+</html>
